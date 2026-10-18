@@ -1,0 +1,115 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter);
+  --font-heading: var(--font-montserrat);
+
+  /* Brand. Orange is 2.6:1 on white, so it is only used as a fill behind navy text. */
+  --color-navy: #002957;
+  --color-navy-700: #0a3a70;
+  --color-teal: #008994;
+  --color-teal-dark: #00747d;
+  --color-teal-light: #5fd4dc;
+  --color-orange: #f6802f;
+  --color-orange-600: #e8711f;
+  --color-orange-light: #fdb68a;
+  --color-surface: #f5f7fa;
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #1f2933;
+  --card: #ffffff;
+  --card-foreground: #1f2933;
+  --popover: #ffffff;
+  --popover-foreground: #1f2933;
+  --primary: #002957;
+  --primary-foreground: #ffffff;
+  --secondary: #f5f7fa;
+  --secondary-foreground: #002957;
+  --muted: #f5f7fa;
+  --muted-foreground: #4b5563;
+  --accent: #e6f4f5;
+  --accent-foreground: #002957;
+  --destructive: #b42318;
+  --border: #dde3ea;
+  --input: #c5ced8;
+  --ring: #00747d;
+  --radius: 0.625rem;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading text-navy;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-teal-dark);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@layer components {
+  .prose-legal h2 {
+    @apply mt-10 mb-3 text-xl font-bold;
+  }
+  .prose-legal p,
+  .prose-legal li {
+    @apply leading-7 text-foreground;
+  }
+  .prose-legal p {
+    @apply mb-4;
+  }
+  .prose-legal ul {
+    @apply mb-4 list-disc space-y-1 pl-6;
+  }
+  .prose-legal a {
+    @apply text-teal-dark underline underline-offset-2;
+  }
+}
