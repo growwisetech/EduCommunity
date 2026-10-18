@@ -63,10 +63,7 @@ export default async function HomePage() {
 
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 md:py-16">
         <section aria-labelledby="next-event-heading">
-          <div className="flex items-center gap-3">
-            <h2 id="next-event-heading" className="text-2xl font-extrabold">Next upcoming event</h2>
-            <PlaceholderBadge />
-          </div>
+          <h2 id="next-event-heading" className="text-2xl font-extrabold">Next upcoming event</h2>
           <div className="mt-6">
             {nextEvent ? <EventCard event={nextEvent} /> : <p>No upcoming events yet. Check back soon.</p>}
           </div>
