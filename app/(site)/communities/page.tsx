@@ -8,7 +8,7 @@ import { ledBy } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Communities",
   description:
-    "Private WhatsApp groups for superintendents, principals, private school leaders, teachers, tutoring business owners, and education partners.",
+    "Private WhatsApp groups for superintendents, principals, private school leaders, curriculum heads, teachers, tutoring business owners, and education partners.",
   openGraph: { url: "/communities" },
 };
 
@@ -24,8 +24,9 @@ export default function CommunitiesPage() {
         intro={
           <>
             <p>
-              Every group is a private WhatsApp community. Request to join, and we&apos;ll email your invite link once
-              your request is approved.
+              Every group is a private WhatsApp community. Request to join, and once you&apos;re approved we&apos;ll
+              email your invite links: the main Education Leaders Community, the group for your role, and our Podcast
+              &amp; Monthly Meeting group.
             </p>
             <p className="mt-3 font-heading font-bold text-teal-dark">{ledBy}</p>
           </>

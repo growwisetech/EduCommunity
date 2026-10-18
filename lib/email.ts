@@ -34,20 +34,30 @@ Thanks for requesting to join ${site.name}. We review every request and will ema
 ${site.name}`,
   }),
 
-  approved: (name: string, groupName: string, inviteUrl: string) => ({
-    subject: `You're approved: join the ${groupName} group`,
-    text: `Hi ${name},
+  approved: (
+    name: string,
+    links: { mainCommunityUrl?: string; groupName: string; groupUrl: string; podcastUrl?: string }
+  ) => {
+    const sections = [
+      links.mainCommunityUrl && `Join the Education Leaders Community:\n${links.mainCommunityUrl}`,
+      `Your ${links.groupName} group:\n${links.groupUrl}`,
+      links.podcastUrl && `Also join our Podcast & Monthly Meeting group:\n${links.podcastUrl}`,
+    ].filter(Boolean);
+
+    return {
+      subject: `You're approved: join the ${links.groupName} group`,
+      text: `Hi ${name},
 
 Welcome to ${site.name}, led by ${site.leader.name}! Your request has been approved.
 
-Join the ${groupName} WhatsApp group here:
-${inviteUrl}
+${sections.join("\n\n")}
 
-Please don't share this link. It's for approved members only. Before you post, take a minute to read our Code of Conduct: ${site.url}/legal/code-of-conduct
+Please don't share these links. They're for approved members only. Before you post, take a minute to read our Code of Conduct: ${site.url}/legal/code-of-conduct
 
 See you inside,
 ${site.name}`,
-  }),
+    };
+  },
 
   rejected: (name: string) => ({
     subject: `About your request to join ${site.name}`,

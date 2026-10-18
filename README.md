@@ -9,7 +9,8 @@ Built with Next.js (App Router), Tailwind CSS, shadcn/ui, Drizzle ORM + Neon Pos
 1. Install dependencies: `npm install`
 2. Copy `.env.example` to `.env.local` and fill in the values. On Vercel, adding the Neon integration from the Marketplace sets `DATABASE_URL` for you.
 3. Create the database tables: `npm run db:migrate`
-4. Start the dev server: `npm run dev`, then open http://localhost:3000
+4. Load the WhatsApp invite links from your `WHATSAPP_LINK_*` variables: `npm run db:seed-links`. The command lists any groups that are still missing a link. You can run it again whenever the links change.
+5. Start the dev server: `npm run dev`, then open http://localhost:3000
 
 Without `RESEND_API_KEY`, emails are printed to the terminal in development instead of being sent. In production, a missing key is treated as an error.
 
@@ -17,8 +18,13 @@ Without `RESEND_API_KEY`, emails are printed to the terminal in development inst
 
 1. A visitor submits the form on `/join`. The request is saved with status **pending**, and they get a "we received your request" email. If `ADMIN_NOTIFY_EMAIL` is set, an admin is notified too.
 2. An admin signs in at `/admin` with `ADMIN_PASSWORD`.
-3. For each pending request, the admin checks the group (it's preselected from the role the person picked, and can be changed), then clicks **Approve & email invite**. The person gets an email with that group's WhatsApp invite link. **Reject** can optionally send a polite decline.
-4. Invite links are stored in the database and edited at `/admin/settings`. They are never shown on the public site. If a link leaks, reset it in WhatsApp and paste the new one there.
+3. For each pending request, the admin checks the group (it's preselected from the role the person picked, and can be changed), then clicks **Approve & email invite**. **Reject** can optionally send a polite decline. The approval email contains up to three links:
+   - The main **Education Leaders Community** (sent to every member, if set)
+   - The person's **role group** (required; approval is blocked until this link is set)
+   - The **Podcast & Monthly Meeting** group (sent to every member, if set)
+4. Invite links are stored in the database. They are never shown on the public site and never committed to git. Load them with `npm run db:seed-links` from the `WHATSAPP_LINK_*` variables in `.env.local`, or edit them at `/admin/settings`. If a link leaks, reset it in WhatsApp and update it there.
+
+There are 7 role groups: Public School Leaders, Private / Independent School Leaders, Superintendents & District Leaders, Curriculum Chairs & Heads, Teachers & Teacher Leaders, Tutoring Business Owners, and Education Partners. Public and private school leaders currently share the same Principals group link.
 
 Spam protection: a hidden honeypot field, plus a limit of 5 submissions per hour per network (IP addresses are stored only as salted hashes).
 

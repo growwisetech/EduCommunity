@@ -1,11 +1,11 @@
 "use server";
 
-import { eq } from "drizzle-orm";
+import { eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getDb, schema } from "@/db";
 import { roleSlugs } from "@/content/audiences";
-import { communities } from "@/content/communities";
+import { communities, inviteLinkGroups, memberWideGroups } from "@/content/communities";
 import { checkPassword, endSession, requireAdmin, startSession } from "@/lib/auth";
 import { emails, sendEmail } from "@/lib/email";
 
@@ -44,16 +44,26 @@ export async function approveRequest(formData: FormData) {
   if (!(roleSlugs as readonly string[]).includes(groupSlug)) back(formData, { error: "Choose a valid group." });
   const group = communities.find((c) => c.slug === groupSlug);
 
-  const [link] = await db
+  const links = await db
     .select()
     .from(schema.groupInviteLinks)
-    .where(eq(schema.groupInviteLinks.groupSlug, groupSlug));
-  if (!link) {
+    .where(inArray(schema.groupInviteLinks.groupSlug, [groupSlug, ...memberWideGroups.map((g) => g.slug)]));
+  const urlFor = (slug: string) => links.find((l) => l.groupSlug === slug)?.inviteUrl;
+
+  const roleUrl = urlFor(groupSlug);
+  if (!roleUrl) {
     back(formData, { error: `No invite link is set for ${group?.name ?? groupSlug}. Add it in Settings first.` });
   }
 
+  const message = emails.approved(request.fullName, {
+    mainCommunityUrl: urlFor("main-community"),
+    groupName: group?.name ?? groupSlug,
+    groupUrl: roleUrl,
+    podcastUrl: urlFor("podcast-monthly"),
+  });
+
   try {
-    await sendEmail({ to: request.email, ...emails.approved(request.fullName, group?.name ?? groupSlug, link.inviteUrl) });
+    await sendEmail({ to: request.email, ...message });
   } catch (err) {
     console.error(err);
     back(formData, { error: `Could not email ${request.email}. The request is still pending.` });
@@ -106,7 +116,7 @@ export async function saveInviteLinks(formData: FormData) {
   await requireAdmin();
   const db = getDb();
 
-  for (const slug of roleSlugs) {
+  for (const { slug } of inviteLinkGroups) {
     const url = formData.get(slug)?.toString().trim() ?? "";
     if (!url) {
       await db.delete(schema.groupInviteLinks).where(eq(schema.groupInviteLinks.groupSlug, slug));

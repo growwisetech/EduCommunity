@@ -2,6 +2,7 @@ export const roleSlugs = [
   "superintendents",
   "public-school-leaders",
   "private-school-leaders",
+  "curriculum-leaders",
   "teachers",
   "tutoring-owners",
   "partners",
@@ -41,6 +42,14 @@ export const audiences: Audience[] = [
     title: "Private & Independent School Leaders",
     description:
       "Heads of school and leadership teams navigating enrollment, advancement, governance, and mission.",
+    isEducator: true,
+  },
+  {
+    slug: "curriculum-leaders",
+    role: "Curriculum Chair / Department Head",
+    title: "Curriculum Chairs & Heads",
+    description:
+      "Curriculum directors, department chairs, and academic heads shaping what and how students learn.",
     isEducator: true,
   },
   {

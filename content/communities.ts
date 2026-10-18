@@ -44,6 +44,17 @@ export const communities: Community[] = [
     featured: true,
   },
   {
+    slug: "curriculum-leaders",
+    name: "Curriculum Chairs & Heads",
+    whoFor: "Curriculum directors, department chairs, academic deans, and heads of curriculum.",
+    rules: [
+      "Curriculum and academic leadership roles only",
+      "Share materials only if you have the rights to share them",
+      "No sales pitches or recruiting",
+    ],
+    featured: false,
+  },
+  {
     slug: "teachers",
     name: "Teachers & Teacher Leaders",
     whoFor: "Classroom teachers, instructional coaches, department chairs, and aspiring leaders.",
@@ -77,6 +88,17 @@ export const communities: Community[] = [
     featured: false,
     isPartnerGroup: true,
   },
+];
+
+/** Groups every approved member is invited to, in addition to their role group. */
+export const memberWideGroups = [
+  { slug: "main-community", name: "Education Leaders Community" },
+  { slug: "podcast-monthly", name: "Podcast & Monthly Meeting" },
+] as const;
+
+export const inviteLinkGroups: { slug: string; name: string }[] = [
+  ...communities.map((c) => ({ slug: c.slug, name: c.name })),
+  ...memberWideGroups,
 ];
 
 export const communityGuidelines = [

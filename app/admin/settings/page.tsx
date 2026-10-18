@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { getDb, schema } from "@/db";
-import { communities } from "@/content/communities";
+import { communities, memberWideGroups } from "@/content/communities";
 import { requireAdmin } from "@/lib/auth";
 import { AdminHeader, Flash } from "../admin-header";
 import { saveInviteLinks } from "../actions";
@@ -29,21 +29,30 @@ export default async function AdminSettingsPage({ searchParams }: PageProps<"/ad
           />
         </div>
         <form action={saveInviteLinks} className="grid gap-5 rounded-xl border border-border bg-white p-6">
-          {communities.map((c) => (
-            <div key={c.slug} className="grid gap-2">
-              <Label htmlFor={`link-${c.slug}`} className="text-navy">
-                {c.name}
-              </Label>
-              <Input
-                id={`link-${c.slug}`}
-                name={c.slug}
-                type="url"
-                inputMode="url"
-                placeholder="https://chat.whatsapp.com/..."
-                defaultValue={linkFor(c.slug)}
-                className="h-11"
-              />
-            </div>
+          {[
+            { heading: "For every member", hint: "Sent to everyone who is approved, along with their role group.", groups: memberWideGroups },
+            { heading: "Role groups", hint: "Sent only to members approved into that group.", groups: communities },
+          ].map((section) => (
+            <fieldset key={section.heading} className="grid gap-5">
+              <legend className="font-heading text-lg font-bold text-navy">{section.heading}</legend>
+              <p className="-mt-3 text-sm text-muted-foreground">{section.hint}</p>
+              {section.groups.map((g) => (
+                <div key={g.slug} className="grid gap-2">
+                  <Label htmlFor={`link-${g.slug}`} className="text-navy">
+                    {g.name}
+                  </Label>
+                  <Input
+                    id={`link-${g.slug}`}
+                    name={g.slug}
+                    type="url"
+                    inputMode="url"
+                    placeholder="https://chat.whatsapp.com/..."
+                    defaultValue={linkFor(g.slug)}
+                    className="h-11"
+                  />
+                </div>
+              ))}
+            </fieldset>
           ))}
           <Button type="submit" variant="brand" size="xl" className="justify-self-start">
             Save links
