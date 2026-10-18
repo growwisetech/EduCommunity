@@ -3,7 +3,6 @@ import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import { EventsBrowser } from "@/components/events-browser";
 import { PageHeader, Section } from "@/components/page-header";
-import { PlaceholderBadge } from "@/components/placeholder-badge";
 import { pastEvents, upcomingEvents } from "@/content/events";
 
 export const metadata: Metadata = {
@@ -20,10 +19,8 @@ export default async function EventsPage() {
       <PageHeader
         eyebrow="Events"
         title="Learn alongside your peers"
-        intro="Virtual roundtables, local meetups, and an annual summit. Many sessions count toward PD hours."
-      >
-        <PlaceholderBadge label="Placeholder events" />
-      </PageHeader>
+        intro="Join our monthly community meetings: live conversations and podcast sessions with education leaders."
+      />
       <Section>
         <Suspense>
           <EventsBrowser upcoming={upcomingEvents()} past={pastEvents()} />
