@@ -62,26 +62,38 @@ export type JoinRequestMail = {
   role: string;
   organization: string;
   email: string;
+  phone?: string;
+  location?: string;
+  goals?: string;
 };
 
 export const emails = {
   /** Fills the join letter template with the applicant's submitted details. */
-  joinRequest: ({ leaderName, fullName, role, organization, email }: JoinRequestMail) => ({
-    subject: `Join request from ${fullName}`,
-    text: `Hi ${leaderName},
+  joinRequest: ({ leaderName, fullName, role, organization, email, phone, location, goals }: JoinRequestMail) => {
+    const details = [
+      `Name: ${fullName}`,
+      `Role: ${role}`,
+      `Organization: ${organization}`,
+      `Email: ${email}`,
+      phone && `Phone: ${phone}`,
+      location && `Location: ${location}`,
+      goals && `Goals: ${goals}`,
+    ].filter(Boolean);
+
+    return {
+      subject: `Join request from ${fullName}`,
+      text: `Hi ${leaderName},
 
 I'd like to join the Education Leaders Community to connect with fellow leaders, share ideas, and collaborate.
 
-Name: ${fullName}
-Role: ${role}
-Organization: ${organization}
-Email: ${email}
+${details.join("\n")}
 
 Please let me know the next steps.
 
 Best regards,
 ${fullName}`,
-  }),
+    };
+  },
 
   received: (name: string) => ({
     subject: `We received your request to join ${site.name}`,

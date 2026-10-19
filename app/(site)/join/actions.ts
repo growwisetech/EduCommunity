@@ -53,6 +53,9 @@ export async function submitJoinRequest(_prev: JoinState, formData: FormData): P
         role: roleLabel,
         organization: data.organization,
         email: data.email,
+        phone: data.phone,
+        location: data.location,
+        goals: data.goals,
       }),
     });
   } catch (err) {
