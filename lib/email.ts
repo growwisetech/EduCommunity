@@ -2,29 +2,87 @@ import "server-only";
 import { Resend } from "resend";
 import { site } from "@/lib/site";
 
-type Mail = { to: string; subject: string; text: string };
+type Mail = { to: string; subject: string; text: string; replyTo?: string };
 
 let resend: Resend | undefined;
 
-export async function sendEmail({ to, subject, text }: Mail) {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) {
-    if (process.env.NODE_ENV === "production") throw new Error("RESEND_API_KEY is not set");
-    console.info(`[email:dev] To: ${to}\nSubject: ${subject}\n\n${text}`);
-    return;
-  }
-  resend ??= new Resend(key);
-  const { error } = await resend.emails.send({
-    from: process.env.FROM_EMAIL ?? `${site.name} <onboarding@resend.dev>`,
-    to,
-    subject,
-    text,
-    replyTo: site.contactEmail,
+async function sendViaFormSubmit({ to, subject, text, replyTo }: Mail) {
+  const res = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(to)}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      _subject: subject,
+      _replyto: replyTo ?? undefined,
+      _template: "box",
+      _captcha: "false",
+      message: text,
+    }),
   });
-  if (error) throw new Error(`Email failed: ${error.message}`);
+
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Email failed (${res.status}): ${body || res.statusText}`);
+  }
+
+  const payload = (await res.json().catch(() => null)) as { success?: boolean; message?: string } | null;
+  if (payload && payload.success === false) {
+    throw new Error(`Email failed: ${payload.message ?? "unknown error"}`);
+  }
 }
 
+/** Deliver email via Resend when configured, otherwise via FormSubmit so it still arrives. */
+export async function sendEmail(mail: Mail) {
+  const key = process.env.RESEND_API_KEY;
+  if (key) {
+    try {
+      resend ??= new Resend(key);
+      const { error } = await resend.emails.send({
+        from: process.env.FROM_EMAIL ?? `${site.name} <onboarding@resend.dev>`,
+        to: mail.to,
+        subject: mail.subject,
+        text: mail.text,
+        replyTo: mail.replyTo ?? site.contactEmail,
+      });
+      if (error) throw new Error(error.message);
+      return;
+    } catch (err) {
+      console.error("Resend failed, falling back to FormSubmit", err);
+    }
+  }
+
+  await sendViaFormSubmit(mail);
+}
+
+export type JoinRequestMail = {
+  leaderName: string;
+  fullName: string;
+  role: string;
+  organization: string;
+  email: string;
+};
+
 export const emails = {
+  /** Fills the join letter template with the applicant's submitted details. */
+  joinRequest: ({ leaderName, fullName, role, organization, email }: JoinRequestMail) => ({
+    subject: `Join request from ${fullName}`,
+    text: `Hi ${leaderName},
+
+I'd like to join the Education Leaders Community to connect with fellow leaders, share ideas, and collaborate.
+
+Name: ${fullName}
+Role: ${role}
+Organization: ${organization}
+Email: ${email}
+
+Please let me know the next steps.
+
+Best regards,
+${fullName}`,
+  }),
+
   received: (name: string) => ({
     subject: `We received your request to join ${site.name}`,
     text: `Hi ${name},

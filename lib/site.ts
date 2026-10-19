@@ -9,7 +9,7 @@ export const site = {
       ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
       : "http://localhost:3000"),
   leader: { name: "Anshika Verma", title: "Community Lead" },
-  contactEmail: "hello@example.org",
+  contactEmail: "conect@thegrowwise.com",
   social: [
     { label: "LinkedIn", href: "https://www.linkedin.com/" },
     { label: "YouTube", href: "https://www.youtube.com/" },
