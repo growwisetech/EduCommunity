@@ -62,7 +62,10 @@ export function EventCard({ event, past = false }: { event: CommunityEvent; past
     <article className="flex h-full flex-col rounded-xl border border-border bg-white p-6">
       <div className="flex flex-wrap items-center gap-2">
         <span className="rounded-full bg-accent px-2.5 py-0.5 text-xs font-bold text-navy">{event.format}</span>
-        {event.pdHours > 0 && (
+        {event.important && (
+          <span className="rounded-full bg-orange px-2.5 py-0.5 text-xs font-bold text-navy">Important event</span>
+        )}
+        {event.pdHours !== undefined && event.pdHours > 0 && (
           <span className="rounded-full bg-surface px-2.5 py-0.5 text-xs font-semibold text-navy">
             {event.pdHours} PD {event.pdHours === 1 ? "hour" : "hours"}
           </span>
@@ -91,18 +94,51 @@ export function EventCard({ event, past = false }: { event: CommunityEvent; past
         </div>
         <div className="flex items-start gap-2">
           <dt><UserRound aria-hidden className="size-4 text-teal-dark" /><span className="sr-only">Host</span></dt>
-          <dd className="font-semibold text-navy">Led by {event.host ?? site.leader.name}</dd>
+          {event.host !== null && (
+            <dd className="font-semibold text-navy">Led by {event.host ?? site.leader.name}</dd>
+          )}
         </div>
       </dl>
       {past ? (
         <p className="mt-6 text-sm font-semibold text-muted-foreground">This event has ended.</p>
-      ) : (
+      ) : event.livestreamUrl ? (
+        <a
+          href={event.livestreamUrl}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(buttonVariants({ variant: "brand", size: "lg" }), "mt-6 h-11 w-full")}
+          aria-label={`Watch ${event.title} on YouTube`}
+        >
+          Watch on YouTube
+        </a>
+      ) : event.actionLabel ? (
+        <button
+          type="button"
+          disabled
+          aria-label={`${event.actionLabel} (YouTube Live link coming soon)`}
+          className={cn(buttonVariants({ variant: "brand", size: "lg" }), "mt-6 h-11 w-full")}
+        >
+          {event.actionLabel}
+        </button>
+      ) : event.registerUrl ? (
         <a
           href={event.registerUrl}
           className={cn(buttonVariants({ variant: "brand", size: "lg" }), "mt-6 h-11 w-full")}
           aria-label={`Register for ${event.title}`}
         >
           Register
+        </a>
+      ) : (
+        <p className="mt-6 text-sm font-semibold text-muted-foreground">{event.availabilityNote ?? "Details TBD."}</p>
+      )}
+      {!past && event.secondaryAction && (
+        <a
+          href={event.secondaryAction.url}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(buttonVariants({ variant: "navyOutline", size: "lg" }), "mt-3 h-11 w-full")}
+        >
+          {event.secondaryAction.label}
         </a>
       )}
     </article>
