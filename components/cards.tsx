@@ -111,11 +111,21 @@ export function EventCard({ event, past = false }: { event: CommunityEvent; past
         >
           Watch on YouTube
         </a>
+      ) : event.actionLabel && event.joinUrl ? (
+        <a
+          href={event.joinUrl}
+          target="_blank"
+          rel="noreferrer"
+          className={cn(buttonVariants({ variant: "brand", size: "lg" }), "mt-6 h-11 w-full")}
+          aria-label={`${event.actionLabel}: ${event.title} (opens in a new tab)`}
+        >
+          {event.actionLabel}
+        </a>
       ) : event.actionLabel ? (
         <button
           type="button"
           disabled
-          aria-label={`${event.actionLabel} (YouTube Live link coming soon)`}
+          aria-label={`${event.actionLabel} (link coming soon)`}
           className={cn(buttonVariants({ variant: "brand", size: "lg" }), "mt-6 h-11 w-full")}
         >
           {event.actionLabel}

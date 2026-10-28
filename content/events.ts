@@ -1,3 +1,5 @@
+import { site } from "@/lib/site";
+
 export const eventFormats = ["Virtual", "In Person", "Summit", "TBD"] as const;
 export type EventFormat = (typeof eventFormats)[number];
 
@@ -14,6 +16,8 @@ export type CommunityEvent = {
   registerUrl?: string;
   livestreamUrl?: string;
   actionLabel?: string;
+  /** Where the action button goes. Without it, the button shows as disabled ("link coming soon"). */
+  joinUrl?: string;
   secondaryAction?: { label: string; url: string };
   important?: boolean;
   availabilityNote?: string;
@@ -48,16 +52,17 @@ export const events: CommunityEvent[] = [
     date: "2026-11-01",
     time: "9:00 PM PST",
     format: "Virtual",
-    location: "YouTube Live (link TBD)",
+    location: "Microsoft Teams (online)",
     audience: "All members",
     pdHours: 0,
     actionLabel: "Join Now",
+    joinUrl:
+      "https://events.teams.microsoft.com/event/9be9b6af-bdd6-40a1-a1ad-6437846a62a0@6a0b9904-509b-49fd-ba05-033cf05b64dc",
     secondaryAction: {
       label: "Register to Be a Part of Podcast",
-      url: "https://events.teams.microsoft.com/event/9be9b6af-bdd6-40a1-a1ad-6437846a62a0@6a0b9904-509b-49fd-ba05-033cf05b64dc?source=copyLinkOneEventsShareDialog",
+      url: site.podcastGuestFormUrl,
     },
     important: true,
-    availabilityNote: "YouTube Live link: TBD.",
     description:
       "A live conversation about why teachers are leaving and practical steps principals can take to support and retain them.",
   },
