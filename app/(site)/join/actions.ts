@@ -6,7 +6,6 @@ import { headers } from "next/headers";
 import { after } from "next/server";
 import { getDb, schema } from "@/db";
 import { getAudience } from "@/content/audiences";
-import { addJoinContactToBrevo } from "@/lib/brevo";
 import { emails, sendEmail } from "@/lib/email";
 import { joinSchema, type JoinFieldErrors, type JoinState } from "@/lib/join-schema";
 import { site } from "@/lib/site";
@@ -24,16 +23,10 @@ export async function submitJoinRequest(_prev: JoinState, formData: FormData): P
   if (formData.get("website")) return { status: "success" };
 
   const raw = Object.fromEntries(
-    [
-      "fullName",
-      "email",
-      "phone",
-      "role",
-      "organization",
-      "location",
-      "goals",
-      "consent",
-    ].map((k) => [k, formData.get(k)?.toString() ?? undefined])
+    ["fullName", "email", "phone", "role", "organization", "location", "goals", "consent", "marketingConsent"].map((k) => [
+      k,
+      formData.get(k)?.toString() ?? undefined,
+    ])
   );
 
   const parsed = joinSchema.safeParse({ ...raw, goals: raw.goals || undefined });
@@ -73,7 +66,7 @@ export async function submitJoinRequest(_prev: JoinState, formData: FormData): P
       location: data.location,
       goals: data.goals ?? null,
       consent: true,
-      marketingConsent: true,
+      marketingConsent: data.marketingConsent === "on",
       groupSlug: data.role,
       ipHash,
     });
@@ -96,12 +89,6 @@ export async function submitJoinRequest(_prev: JoinState, formData: FormData): P
       }
     } catch (err) {
       console.error("Join emails failed", err);
-    }
-
-    try {
-      await addJoinContactToBrevo(data.email);
-    } catch (err) {
-      console.error("Brevo marketing contact sync failed", err);
     }
   });
 

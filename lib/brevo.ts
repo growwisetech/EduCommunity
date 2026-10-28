@@ -1,10 +1,14 @@
 import "server-only";
 
-export async function addJoinContactToBrevo(email: string) {
+export async function addContactToBrevo(email: string) {
   const apiKey = process.env.BREVO_API_KEY;
-  const listId = Number(process.env.BREVO_JOIN_LIST_ID);
+  if (!apiKey) {
+    if (process.env.NODE_ENV === "production") throw new Error("BREVO_API_KEY is not configured");
+    console.info(`[brevo:dev] Would add ${email} to the news and updates list`);
+    return;
+  }
 
-  if (!apiKey) throw new Error("BREVO_API_KEY is not configured");
+  const listId = Number(process.env.BREVO_JOIN_LIST_ID);
   if (!Number.isSafeInteger(listId) || listId < 1) {
     throw new Error("BREVO_JOIN_LIST_ID must be a positive integer");
   }
@@ -21,9 +25,11 @@ export async function addJoinContactToBrevo(email: string) {
       listIds: [listId],
       updateEnabled: true,
     }),
+    signal: AbortSignal.timeout(10_000),
   });
 
   if (!response.ok) {
-    throw new Error(`Brevo contact sync failed with HTTP ${response.status}`);
+    const detail = await response.text().catch(() => "");
+    throw new Error(`Brevo contact sync failed with HTTP ${response.status}: ${detail}`);
   }
 }

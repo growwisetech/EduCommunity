@@ -23,7 +23,7 @@ export default function PrivacyPage() {
         <li>Phone number</li>
         <li>Role, school / district / organization, and location</li>
         <li>Your optional answer to &ldquo;What do you hope to get from the community?&rdquo;</li>
-        <li>Your email address is added to our community news and updates mailing list when you submit a Join request</li>
+        <li>Whether you would like to receive community news and updates by email (optional)</li>
       </ul>
       <p>We also collect basic, privacy-friendly website analytics (pages visited, device type) that do not identify you.</p>
 
@@ -45,7 +45,10 @@ export default function PrivacyPage() {
       <ul>
         <li>To review your request and place you in the right group</li>
         <li>To email you your group invite link and important community updates</li>
-        <li>To send community news and updates to people who submit a Join request</li>
+        <li>
+          If you opt in, to send you community news and updates. We add your email to that list only once your
+          request is approved.
+        </li>
         <li>To keep groups safe and enforce the Code of Conduct</li>
       </ul>
 

@@ -14,7 +14,9 @@ Built with Next.js (App Router), Tailwind CSS, shadcn/ui, Drizzle ORM + Neon Pos
 
 Without `RESEND_API_KEY`, emails are printed to the terminal in development instead of being sent. In production, a missing key is treated as an error.
 
-Everyone who submits the Join form is added to the Brevo list for community news and updates. Make sure this subscription is disclosed to applicants. Set `BREVO_API_KEY` to a Brevo API key and `BREVO_JOIN_LIST_ID` to the numeric ID of the destination list in `.env.local` and in the deployment environment. The API key must remain server-side and must never be committed to git.
+The Join form has an optional, unchecked "Email me community news and updates" box. When an admin approves a request where that box was checked, the email is added to the Brevo list. Applicants who didn't opt in, and rejected applicants, are never added. Set `BREVO_API_KEY` to a Brevo API key and `BREVO_JOIN_LIST_ID` to the numeric ID of the destination list in `.env.local` and in the deployment environment. The API key must remain server-side and must never be committed to git. Without `BREVO_API_KEY`, the sync is printed to the terminal in development and logged as an error in production. A Brevo failure never blocks an approval.
+
+Before deploying a change that adds a database migration, run `npm run db:migrate` against the production database. Otherwise Join submissions fail until it runs.
 
 ## How the gated WhatsApp flow works
 

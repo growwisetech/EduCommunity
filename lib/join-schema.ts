@@ -14,6 +14,7 @@ export const joinSchema = z.object({
   location: z.string().trim().min(2, "Please enter your city and state or country.").max(200),
   goals: z.string().trim().max(2000).optional(),
   consent: z.literal("on", "You must agree to the Privacy Policy to continue."),
+  marketingConsent: z.literal("on").optional(),
 });
 
 export type JoinFieldErrors = Partial<Record<keyof z.infer<typeof joinSchema>, string>>;
