@@ -14,6 +14,8 @@ Built with Next.js (App Router), Tailwind CSS, shadcn/ui, Drizzle ORM + Neon Pos
 
 Without `RESEND_API_KEY`, emails are printed to the terminal in development instead of being sent. In production, a missing key is treated as an error.
 
+Everyone who submits the Join form is added to the Brevo list for community news and updates. Make sure this subscription is disclosed to applicants. Set `BREVO_API_KEY` to a Brevo API key and `BREVO_JOIN_LIST_ID` to the numeric ID of the destination list in `.env.local` and in the deployment environment. The API key must remain server-side and must never be committed to git.
+
 ## How the gated WhatsApp flow works
 
 1. A visitor submits the form on `/join`. The request is saved with status **pending**, and they get a "we received your request" email. If `ADMIN_NOTIFY_EMAIL` is set, an admin is notified too.

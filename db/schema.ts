@@ -14,6 +14,7 @@ export const joinRequests = pgTable(
     location: text("location").notNull(),
     goals: text("goals"),
     consent: boolean("consent").notNull(),
+    marketingConsent: boolean("marketing_consent").notNull().default(false),
     status: requestStatus("status").notNull().default("pending"),
     groupSlug: text("group_slug").notNull(),
     ipHash: text("ip_hash"),

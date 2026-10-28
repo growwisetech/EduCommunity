@@ -23,6 +23,7 @@ export default function PrivacyPage() {
         <li>Phone number</li>
         <li>Role, school / district / organization, and location</li>
         <li>Your optional answer to &ldquo;What do you hope to get from the community?&rdquo;</li>
+        <li>Your email address is added to our community news and updates mailing list when you submit a Join request</li>
       </ul>
       <p>We also collect basic, privacy-friendly website analytics (pages visited, device type) that do not identify you.</p>
 
@@ -44,19 +45,22 @@ export default function PrivacyPage() {
       <ul>
         <li>To review your request and place you in the right group</li>
         <li>To email you your group invite link and important community updates</li>
+        <li>To send community news and updates to people who submit a Join request</li>
         <li>To keep groups safe and enforce the Code of Conduct</li>
       </ul>
 
       <h2>Sharing</h2>
       <p>
         We share information only with service providers that help us run the community (for example, our database
-        and email providers), and only as needed to provide those services. We never sell personal information.
+        and email providers, including Brevo for community news and updates), and only as needed to
+        provide those services. We never sell personal information.
       </p>
 
       <h2>Retention and your choices</h2>
       <p>
         We keep your information while you are a member, and delete it within [X] days of a request to leave or a
-        rejected application. You can ask us to access, correct, or delete your information at any time by emailing{" "}
+        rejected application. You can unsubscribe from community news and updates at any time using the unsubscribe
+        link in those emails. You can also ask us to access, correct, or delete your information by emailing{" "}
         <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
       </p>
 
