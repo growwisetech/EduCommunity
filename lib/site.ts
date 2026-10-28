@@ -1,6 +1,7 @@
 export const site = {
   name: "Education Leader Community",
   shortName: "ELC",
+  podcastGuestFormUrl: "https://forms.gle/9hgsBu475vuQDUqb7",
   mission:
     "A peer community where K–12 education leaders find their people, share what works, and solve problems together.",
   url:
