@@ -174,6 +174,19 @@ export function JoinForm({ defaultRole }: { defaultRole?: string }) {
         )}
       </div>
 
+      <div className="flex items-start gap-3">
+        <input
+          id="marketingConsent"
+          name="marketingConsent"
+          type="checkbox"
+          defaultChecked={values?.marketingConsent === "on"}
+          className="mt-1 size-5 shrink-0 accent-navy"
+        />
+        <label htmlFor="marketingConsent" className="text-sm leading-6">
+          Email me community news and updates (optional). You can unsubscribe at any time.
+        </label>
+      </div>
+
       <Button type="submit" variant="brand" size="xl" disabled={pending} className="justify-self-start">
         {pending ? "Submitting…" : "Request to Join"}
       </Button>
