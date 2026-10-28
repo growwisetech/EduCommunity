@@ -1,27 +1,23 @@
 import "server-only";
-import { Resend } from "resend";
+import { brevoApiKey, brevoRequest } from "@/lib/brevo";
 import { site } from "@/lib/site";
 
 type Mail = { to: string; subject: string; text: string };
 
-let resend: Resend | undefined;
-
+// The sender must be a verified sender in Brevo (Senders, Domains & Dedicated IPs > Senders).
 export async function sendEmail({ to, subject, text }: Mail) {
-  const key = process.env.RESEND_API_KEY;
-  if (!key) {
-    if (process.env.NODE_ENV === "production") throw new Error("RESEND_API_KEY is not set");
+  const apiKey = brevoApiKey();
+  if (!apiKey) {
     console.info(`[email:dev] To: ${to}\nSubject: ${subject}\n\n${text}`);
     return;
   }
-  resend ??= new Resend(key);
-  const { error } = await resend.emails.send({
-    from: process.env.FROM_EMAIL ?? `${site.name} <onboarding@resend.dev>`,
-    to,
+  await brevoRequest("/smtp/email", apiKey, {
+    sender: { name: site.name, email: site.contactEmail },
+    to: [{ email: to }],
+    replyTo: { email: site.contactEmail },
     subject,
-    text,
-    replyTo: site.contactEmail,
+    textContent: text,
   });
-  if (error) throw new Error(`Email failed: ${error.message}`);
 }
 
 export const emails = {

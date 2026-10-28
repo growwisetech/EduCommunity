@@ -2,7 +2,7 @@
 
 Website for an online community of K–12 education leaders: peer WhatsApp groups (gated by admin approval), events, resources, forums preview, partner program, and legal pages.
 
-Built with Next.js (App Router), Tailwind CSS, shadcn/ui, Drizzle ORM + Neon Postgres, and Resend. Deploys to Vercel.
+Built with Next.js (App Router), Tailwind CSS, shadcn/ui, Drizzle ORM + Neon Postgres, and Brevo for email. Deploys to Vercel.
 
 ## Setup
 
@@ -12,9 +12,9 @@ Built with Next.js (App Router), Tailwind CSS, shadcn/ui, Drizzle ORM + Neon Pos
 4. Load the WhatsApp invite links from your `WHATSAPP_LINK_*` variables: `npm run db:seed-links`. The command lists any groups that are still missing a link. You can run it again whenever the links change.
 5. Start the dev server: `npm run dev`, then open http://localhost:3000
 
-Without `RESEND_API_KEY`, emails are printed to the terminal in development instead of being sent. In production, a missing key is treated as an error.
+Brevo sends every site email (request received, approval with invite links, decline, admin alerts). Emails are sent from `site.contactEmail` in `lib/site.ts`, which must be a verified sender in Brevo under **Senders, Domains & Dedicated IPs**, then **Senders**. Without `BREVO_API_KEY`, emails are printed to the terminal in development instead of being sent. In production, a missing key is treated as an error.
 
-The Join form has an optional, unchecked "Email me community news and updates" box. When an admin approves a request where that box was checked, the email is added to the Brevo list. Applicants who didn't opt in, and rejected applicants, are never added. Set `BREVO_API_KEY` to a Brevo API key and `BREVO_JOIN_LIST_ID` to the numeric ID of the destination list in `.env.local` and in the deployment environment. The API key must remain server-side and must never be committed to git. Without `BREVO_API_KEY`, the sync is printed to the terminal in development and logged as an error in production. A Brevo failure never blocks an approval.
+The Join form has an optional, unchecked "Email me community news and updates" box. When an admin approves a request where that box was checked, the email is added to the Brevo list. Applicants who didn't opt in, and rejected applicants, are never added. Set `BREVO_JOIN_LIST_ID` to the numeric ID of the destination list in `.env.local` and in the deployment environment. `BREVO_API_KEY` must remain server-side and must never be committed to git. Without `BREVO_API_KEY`, the sync is printed to the terminal in development and logged as an error in production. A Brevo failure never blocks an approval.
 
 Before deploying a change that adds a database migration, run `npm run db:migrate` against the production database. Otherwise Join submissions fail until it runs.
 

@@ -87,6 +87,23 @@ export default async function HomePage() {
         </div>
 
         {/* TODO: Restore the latest forum discussions when real forum data is available. */}
+        <section aria-labelledby="podcast-guest-heading" className="self-start rounded-2xl border bg-surface p-6 sm:p-8">
+          <h2 id="podcast-guest-heading" className="text-2xl font-extrabold">Be a podcast guest</h2>
+          <p className="mt-3 text-muted-foreground">
+            Have a story or practice other education leaders could learn from? Share your details and we&apos;ll reach
+            out about joining an episode.
+          </p>
+          <a
+            href={site.podcastGuestFormUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(buttonVariants({ variant: "navyOutline", size: "xl" }), "mt-6")}
+          >
+            Be a Podcast Guest
+            <span className="sr-only"> (opens in a new tab)</span>
+          </a>
+          <p className="mt-3 text-sm text-muted-foreground">Opens a Google Form.</p>
+        </section>
       </div>
 
       <section aria-labelledby="cta-heading" className="bg-navy">
