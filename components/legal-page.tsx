@@ -9,7 +9,7 @@ export function LegalPage({ title, updated, children }: { title: string; updated
       <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
         <div role="note" className="mb-8 flex flex-wrap items-center gap-3 rounded-xl border border-dashed border-navy/40 bg-surface p-4 text-sm">
           <PlaceholderBadge />
-          <span>This is placeholder text. Have legal counsel review it before launch.</span>
+          <span>Draft — pending legal review.</span>
         </div>
         <div className="prose-legal">{children}</div>
       </div>

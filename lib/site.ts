@@ -11,8 +11,8 @@ export const site = {
   leader: { name: "Anshika Verma", title: "Community Lead" },
   contactEmail: "eduleaderscommunity@gmail.com",
   social: [
-    { label: "LinkedIn", href: "https://www.linkedin.com/" },
-    { label: "YouTube", href: "https://www.youtube.com/" },
+    { label: "LinkedIn", href: "https://www.linkedin.com/groups/40961278/" },
+    { label: "YouTube", href: "https://www.youtube.com/@anshikavermaGW" },
   ],
 };
 
