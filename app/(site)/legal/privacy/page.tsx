@@ -67,7 +67,7 @@ export default function PrivacyPage() {
         <li>With our authorized community administrators, to review and manage membership requests</li>
         <li>
           With service providers that support the website, database, analytics, and email delivery, including Vercel,
-          Neon, Resend, and Brevo (for community news and updates, if you opt in)
+          Neon, and Brevo (for emails about your membership and, if you opt in, community news and updates)
         </li>
         <li>With WhatsApp and group members when you choose to join a WhatsApp group, as described above</li>
       </ul>
