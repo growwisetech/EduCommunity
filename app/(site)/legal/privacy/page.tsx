@@ -10,12 +10,11 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <LegalPage title="Privacy Policy" updated="October 22, 2026">
+    <LegalPage title="Privacy Policy" updated="October 28, 2026">
       <p>
-        Education Leaders Community (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) is based in
-        California, United States. This website and community are intended for mentors and educators in any region.
-        This policy explains what personal information we collect, how we use and share it, and the choices available
-        to you.
+        {site.name} (&ldquo;we,&rdquo; &ldquo;us,&rdquo; or &ldquo;our&rdquo;) is based in California, United States.
+        This website and community are intended for K–12 education leaders and educators in any region. This policy
+        explains what personal information we collect, how we use and share it, and the choices available to you.
       </p>
 
       <h2>Information we collect</h2>
@@ -24,6 +23,7 @@ export default function PrivacyPage() {
         <li>Your name, work email address, and phone number</li>
         <li>Your role, school, district or organization, and location</li>
         <li>Your optional answer about what you hope to get from the community</li>
+        <li>Whether you would like to receive community news and updates by email (optional)</li>
       </ul>
       <p>
         We also create a one-way hash derived from your IP address to help limit automated or repeated join requests.
@@ -41,6 +41,10 @@ export default function PrivacyPage() {
       <ul>
         <li>Review join requests and determine appropriate community groups</li>
         <li>Email you about your request, approval, or community membership</li>
+        <li>
+          If you opt in, send you community news and updates. We add your email to that list only once your request
+          is approved.
+        </li>
         <li>Help keep the community safe and enforce our Code of Conduct</li>
         <li>Prevent abuse of the join form and operate, maintain, and improve the website</li>
       </ul>
@@ -50,7 +54,8 @@ export default function PrivacyPage() {
         We use your phone number to support membership in WhatsApp groups, which identify members by phone number. If
         you choose to join a group, other group members may be able to see your number and other profile information
         according to your WhatsApp settings. WhatsApp&apos;s own privacy policy and terms apply to your use of its
-        service. We do not use your number for marketing calls or texts.
+        service. We do not use your number for marketing calls or texts, and we do not share it with partners or
+        sponsors.
       </p>
 
       <h2>How we share information</h2>
@@ -62,11 +67,9 @@ export default function PrivacyPage() {
         <li>With our authorized community administrators, to review and manage membership requests</li>
         <li>
           With service providers that support the website, database, analytics, and email delivery, including Vercel,
-          Neon, and Resend
+          Neon, Resend, and Brevo (for community news and updates, if you opt in)
         </li>
-        <li>
-          With WhatsApp and group members when you choose to join a WhatsApp group, as described above
-        </li>
+        <li>With WhatsApp and group members when you choose to join a WhatsApp group, as described above</li>
       </ul>
       <p>
         Service providers process information on our behalf under their own privacy practices and may process or store
@@ -92,16 +95,17 @@ export default function PrivacyPage() {
 
       <h2>Your choices and privacy rights</h2>
       <p>
-        You can ask us to access, correct, or delete personal information you have provided. Depending on where you
-        live, applicable privacy laws may provide additional rights. To make a request, contact us at{" "}
+        You can unsubscribe from community news and updates at any time using the unsubscribe link in those emails.
+        You can also ask us to access, correct, or delete personal information you have provided. Depending on where
+        you live, applicable privacy laws may provide additional rights. To make a request, contact us at{" "}
         <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>. We may need to verify your identity before
         completing a request.
       </p>
 
       <h2>Children</h2>
       <p>
-        The community is intended for adult mentors and educators and is not directed to children under 18. We do not
-        knowingly collect personal information from anyone under 18.
+        The community is intended for adult education professionals and is not directed to children under 18. We do
+        not knowingly collect personal information from anyone under 18.
       </p>
 
       <h2>Changes to this policy</h2>

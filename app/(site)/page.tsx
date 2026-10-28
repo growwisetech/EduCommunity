@@ -1,25 +1,26 @@
 import { cacheLife } from "next/cache";
 import Link from "next/link";
-import { MessageSquare } from "lucide-react";
 import { AudienceCard, CommunityCard, EventCard } from "@/components/cards";
+import { ImportantEventNotice } from "@/components/important-event-notice";
 import { Section } from "@/components/page-header";
-import { PlaceholderBadge } from "@/components/placeholder-badge";
 import { buttonVariants } from "@/components/ui/button";
 import { audiences } from "@/content/audiences";
 import { communities } from "@/content/communities";
 import { upcomingEvents } from "@/content/events";
-import { threadPreviews } from "@/content/forums";
 import { site } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
 export default async function HomePage() {
   "use cache";
   cacheLife("hours");
-  const nextEvent = upcomingEvents()[0];
+  const scheduledEvents = upcomingEvents();
+  const nextEvent = scheduledEvents[0];
+  const importantEvent = scheduledEvents.find((event) => event.important);
   const featured = communities.filter((c) => c.featured);
 
   return (
     <>
+      {importantEvent && <ImportantEventNotice event={importantEvent} />}
       <section aria-labelledby="hero-heading" className="bg-surface">
         <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6 md:py-24">
           <p className="font-heading text-sm font-bold tracking-wide text-teal-dark uppercase">
@@ -62,38 +63,30 @@ export default async function HomePage() {
       </Section>
 
       <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-2 md:py-16">
-        <section aria-labelledby="next-event-heading">
-          <h2 id="next-event-heading" className="text-2xl font-extrabold">Next upcoming event</h2>
-          <div className="mt-6">
-            {nextEvent ? <EventCard event={nextEvent} /> : <p>No upcoming events yet. Check back soon.</p>}
-          </div>
-          <Link href="/events" className="mt-6 inline-block font-semibold text-teal-dark underline underline-offset-4">
-            All events
-          </Link>
-        </section>
+        <div className="space-y-10">
+          {importantEvent && (
+            <section aria-labelledby="important-event-heading">
+              <h2 id="important-event-heading" className="text-2xl font-extrabold">Important event</h2>
+              <div className="mt-6">
+                <EventCard event={importantEvent} />
+              </div>
+              <Link href="/events" className="mt-6 inline-block font-semibold text-teal-dark underline underline-offset-4">
+                All event details
+              </Link>
+            </section>
+          )}
+          <section aria-labelledby="next-event-heading">
+            <h2 id="next-event-heading" className="text-2xl font-extrabold">Next upcoming event</h2>
+            <div className="mt-6">
+              {nextEvent ? <EventCard event={nextEvent} /> : <p>No upcoming events yet. Check back soon.</p>}
+            </div>
+            <Link href="/events" className="mt-6 inline-block font-semibold text-teal-dark underline underline-offset-4">
+              All events
+            </Link>
+          </section>
+        </div>
 
-        <section aria-labelledby="discussions-heading">
-          <div className="flex items-center gap-3">
-            <h2 id="discussions-heading" className="text-2xl font-extrabold">Latest forum discussions</h2>
-            <PlaceholderBadge />
-          </div>
-          <ul className="mt-6 divide-y divide-border rounded-xl border border-border bg-white">
-            {threadPreviews.map((t) => (
-              <li key={t.title} className="flex gap-3 p-5">
-                <MessageSquare aria-hidden className="mt-1 size-5 shrink-0 text-teal-dark" />
-                <div>
-                  <p className="font-semibold text-navy">{t.title}</p>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {t.board} · {t.replies} replies · {t.lastActivity}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-          <Link href="/forums" className="mt-6 inline-block font-semibold text-teal-dark underline underline-offset-4">
-            Browse the forums
-          </Link>
-        </section>
+        {/* TODO: Restore the latest forum discussions when real forum data is available. */}
       </div>
 
       <section aria-labelledby="cta-heading" className="bg-navy">

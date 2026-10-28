@@ -23,7 +23,7 @@ export async function submitJoinRequest(_prev: JoinState, formData: FormData): P
   if (formData.get("website")) return { status: "success" };
 
   const raw = Object.fromEntries(
-    ["fullName", "email", "phone", "role", "organization", "location", "goals", "consent"].map((k) => [
+    ["fullName", "email", "phone", "role", "organization", "location", "goals", "consent", "marketingConsent"].map((k) => [
       k,
       formData.get(k)?.toString() ?? undefined,
     ])
@@ -66,6 +66,7 @@ export async function submitJoinRequest(_prev: JoinState, formData: FormData): P
       location: data.location,
       goals: data.goals ?? null,
       consent: true,
+      marketingConsent: data.marketingConsent === "on",
       groupSlug: data.role,
       ipHash,
     });

@@ -3,10 +3,12 @@
 import { eq, inArray } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { after } from "next/server";
 import { getDb, schema } from "@/db";
 import { roleSlugs } from "@/content/audiences";
 import { communities, inviteLinkGroups, memberWideGroups } from "@/content/communities";
 import { checkPassword, endSession, requireAdmin, startSession } from "@/lib/auth";
+import { addContactToBrevo } from "@/lib/brevo";
 import { emails, sendEmail } from "@/lib/email";
 
 export async function login(_prev: { error?: string }, formData: FormData): Promise<{ error?: string }> {
@@ -73,6 +75,16 @@ export async function approveRequest(formData: FormData) {
     .update(schema.joinRequests)
     .set({ status: "approved", groupSlug, reviewedAt: new Date() })
     .where(eq(schema.joinRequests.id, request.id));
+
+  if (request.marketingConsent) {
+    after(async () => {
+      try {
+        await addContactToBrevo(request.email);
+      } catch (err) {
+        console.error("Brevo contact sync failed", err);
+      }
+    });
+  }
 
   revalidatePath("/admin");
   back(formData, { notice: `Approved ${request.fullName} and emailed the invite link.` });
