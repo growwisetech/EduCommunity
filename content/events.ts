@@ -24,6 +24,7 @@ export type CommunityEvent = {
   description: string;
   /** Shown as "Led by …”. Defaults to the community lead in `lib/site.ts`. */
   host?: string | null;
+  hostUrl?: string;
 };
 
 function monthlyMeeting(date: string, time: string): CommunityEvent {
@@ -67,17 +68,19 @@ export const events: CommunityEvent[] = [
       "A live conversation about why teachers are leaving and practical steps principals can take to support and retain them.",
   },
   {
-    slug: "event-details-tbd-2026-11-07",
-    title: "Event details TBD",
+    slug: "education-leaders-podcast-curriculum-understood",
+    title: "Education Leaders Podcast: Curriculum Completed ≠ Understood",
     date: "2026-11-07",
-    time: "TBD",
-    format: "TBD",
-    location: "TBD",
-    audience: "Public",
-    actionLabel: "Join Now",
-    availabilityNote: "Join link: TBD.",
-    description: "More information about this event will be shared soon.",
+    time: "7:00–8:00 PM PST",
+    format: "Virtual",
+    location: "Online",
+    audience: "K–12 educators and school leaders",
+    registerUrl: "https://luma.com/wpk7u7me",
+    important: true,
+    description:
+      "Moving beyond pacing: why a completed curriculum does not always mean students understand it. Join a panel of global curriculum leaders to discuss bridging the gap between pacing calendars and genuine mastery. Featured guests: Priya Sud (New Horizons School), Ghulam Ali Zour (Sindh School System Welfare Foundation), and Daniella Da Silva (Jiaxing Nanhu Alliance Experimental School).",
     host: "Anshika Verma",
+    hostUrl: "https://omnix360.io",
   },
   monthlyMeeting("2026-11-21", "7:00 PM PT"),
   monthlyMeeting("2026-12-12", "7:00 PM PT"),
