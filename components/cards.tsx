@@ -95,7 +95,16 @@ export function EventCard({ event, past = false }: { event: CommunityEvent; past
         <div className="flex items-start gap-2">
           <dt><UserRound aria-hidden className="size-4 text-teal-dark" /><span className="sr-only">Host</span></dt>
           {event.host !== null && (
-            <dd className="font-semibold text-navy">Led by {event.host ?? site.leader.name}</dd>
+            <dd className="font-semibold text-navy">
+              {event.hostUrl ? (
+                <a href={event.hostUrl} target="_blank" rel="noopener noreferrer" className="underline underline-offset-2">
+                  Led by {event.host ?? site.leader.name}
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              ) : (
+                <>Led by {event.host ?? site.leader.name}</>
+              )}
+            </dd>
           )}
         </div>
       </dl>
